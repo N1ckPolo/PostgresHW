@@ -93,3 +93,14 @@ values
 	(14, 4),
 	(15, 4),
 	(18, 1);
+
+insert into album 
+values 
+	(10, 'test', 9999);
+
+insert into trackinfo
+values
+	(20, 10, 'myself', 1),
+	(21, 10, 'by myself', 1),
+	(22, 10, 'my own', 1),
+	(23, 10, 'own my', 1);
