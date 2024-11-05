@@ -7,7 +7,7 @@ SELECT track_title, track_duration
 --2.Название треков, продолжительность которых не менее 3,5 минут.
 SELECT track_title, track_duration
   FROM trackinfo  
- WHERE track_duration > 210;
+ WHERE track_duration >= 210;
  
 -- 3.Названия сборников, вышедших в период с 2018 по 2020 год включительно.
 select mixtape_title, mixtape_year
@@ -20,11 +20,13 @@ select artist_name
  where artist_name not like '% %';
  
 -- 5.Название треков, которые содержат слово «мой» или «my».
-select track_title  
+-- select track_title  
+--   from trackinfo 
+--  where lower(track_title) like '%you%';
+-- --заменил 'my' на 'you'
+select track_title 
   from trackinfo 
- where lower(track_title) like '%you%';
---заменил 'my' на 'you'
- 
+ where string_to_array(lower(track_title), ' ') && array ['my'];
  
 -- Задание №3
 -- 1.Количество исполнителей в каждом жанре.
@@ -55,10 +57,10 @@ select distinct artist_name
   join artist ar 
     on aa.artist_id = ar.artist_id 
  where aa.artist_id not in (select artist_id 
- 				              from artistalbum aa
- 				              join album a 
- 				                on aa.album_id = a.album_id
- 				             where album_year = 2019);
+ 			      from artistalbum aa
+ 		              join album a 
+                                on aa.album_id = a.album_id
+ 		             where album_year = 2019);
   --заменил год на 2019 
 		            
 -- 5.Названия сборников, в которых присутствует конкретный исполнитель (выберите его сами).          
@@ -88,8 +90,8 @@ having count(genre_id) = 1
 select track_id, track_title 
   from trackinfo t 
  where track_id not in (select track_id 
-  	 				      from trackinfo t2
-  						  join mixtapetracklist m using(track_id));
+  	 		  from trackinfo t2
+  			  join mixtapetracklist m using(track_id));
  
 --3.Исполнитель или исполнители, написавшие самый короткий по продолжительности трек, — 
 --теоретически таких треков может быть несколько.
@@ -106,8 +108,8 @@ select al.album_title, count(track_id)
   join album al using(album_id) 
  group by al.album_title 
 having count(track_id) = (select min(cnt)
-  						              from (select al.album_title, count(track_id) as cnt
+  			    from (select al.album_title, count(track_id) as cnt
                                     from trackinfo t 
-		                                join album al using(album_id)
-	                                 group by al.album_title) as sel);
+		                    join album al using(album_id)
+	                           group by al.album_title) as sel);
 --боже храни костыли:)
