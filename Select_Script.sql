@@ -100,7 +100,8 @@ select ar.artist_name, track_title, track_duration
   join album al using(album_id)
   join artistalbum aa using(album_id)
   join artist ar using(artist_id)
- where aa.artist_id = ar.artist_id and track_duration in (select min(track_duration) from trackinfo) 
+ where aa.artist_id = ar.artist_id and track_duration in (select min(track_duration) from trackinfo where track_duration != 1) 
+-- добавил в конце запроса 'where track_duration != 1', чтобы в выборку не попали тестовые треки из задания №2.5
 
 --4.Названия альбомов, содержащих наименьшее количество треков.
 select al.album_title, count(track_id) 
